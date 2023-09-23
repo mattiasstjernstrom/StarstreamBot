@@ -1,5 +1,4 @@
 import discord
-import asyncio
 from discord.ext import commands
 from discord_key import discord_key
 from fuzzywuzzy import fuzz
@@ -21,6 +20,10 @@ async def on_ready():
             type=discord.ActivityType.listening, name="Boten Anna - Basshunter"
         )
     )
+
+
+@client.event
+async def on_raw_reaction_add(payload):
     if payload.user_id == client.user.id:
         return
 
