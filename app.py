@@ -15,11 +15,7 @@ client = discord.Client(command_prefix="!", intents=intents)
 async def on_ready():
     print("\033[1m\033[95mWe have logged in as {0.user}".format(client))
     await client.get_channel(1154684336386355302).send("_StarstreamBot is online_ 💫")
-    await client.change_presence(
-        activity=discord.Activity(
-            type=discord.ActivityType.listening, name="Boten Anna - Basshunter"
-        )
-    )
+    await client.change_presence(activity=discord.CustomActivity(name='🤖 Type "!SBB <keywords>" to call me' ,emoji='🤖'))
 
 
 @client.event
