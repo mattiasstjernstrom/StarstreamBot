@@ -8,22 +8,23 @@ import re
 
 discord_key = discord_key()
 intents = discord.Intents.all()
-client = discord.Client(command_prefix="!", intents=intents)
+bot = discord.Client(command_prefix="!", intents=intents)
+channel = bot.get_channel(1154684336386355302)
 
 
-@client.event
+@bot.event
 async def on_ready():
-    print("\033[1m\033[95mWe have logged in as {0.user}".format(client))
-    await client.get_channel(1154684336386355302).send("_StarstreamBot is online_ 💫")
-    await client.change_presence(activity=discord.CustomActivity(name='🤖 Type "!SBB <keywords>" to call me' ,emoji='🤖'))
+    print("\033[1m\033[95mWe have logged in as {0.user}".format(bot))
+    await bot.get_channel(1154684336386355302).send("_StarstreamBot is online_ 💫")
+    await bot.change_presence(activity=discord.CustomActivity(name='🤖 Type "!SBB <keywords>" to call me' ,emoji='🤖'))
 
 
-@client.event
+@bot.event
 async def on_raw_reaction_add(payload):
-    if payload.user_id == client.user.id:
+    if payload.user_id == bot.user.id:
         return
 
-    channel = client.get_channel(1154684336386355302)
+    channel = bot.get_channel(1154684336386355302)
 
     if channel:
         emoji = str(payload.emoji)
@@ -47,10 +48,10 @@ def read_file(filepath):
     return answers
 
 
-@client.event
+@bot.event
 async def on_message(message):
     if message.content.startswith("!SSB"):
-        if message.author == client.user:
+        if message.author == bot.user:
             return
 
         content = message.content.lower()
@@ -74,9 +75,10 @@ async def on_message(message):
 
         if max_match > 50:
             answer = (
-                f"Best match i could find was:\n {best_match[0]} - _{best_match[1]}_"
+                f"Best match i could find was:```{best_match[0]} - {best_match[1]}``` _Do you wan't more information about {best_match[0]}?_ Type 'Yes'"
             )
             await message.channel.send(answer)
+
         else:
             no_answer = content.replace("!ssb", "")
             await message.channel.send(
@@ -84,4 +86,4 @@ async def on_message(message):
             )
 
 
-client.run(discord_key)
+bot.run(discord_key)
