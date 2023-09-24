@@ -9,15 +9,19 @@ import re
 intents = discord.Intents.all()
 bot = discord.Client(command_prefix="!", intents=intents)
 channel = bot.get_channel(1154684336386355302)
-filepath = "test_dict.csv" #! Database for questions
+filepath = "test_dict.csv"  #! Database for questions
 
 
 @bot.event
 async def on_ready():
     print("\033[1m\033[95mWe have logged in as {0.user}".format(bot))
     await bot.get_channel(1154684336386355302).send("_StarstreamBot is online_ 💫")
-    await bot.change_presence(activity=discord.CustomActivity(name='🤖 Type "!SBB <keywords>" to call me' ,emoji='🤖'))
-    
+    await bot.change_presence(
+        activity=discord.CustomActivity(
+            name='🤖 Type "!SBB <keywords>" to call me', emoji="🤖"
+        )
+    )
+
     @bot.event
     async def on_raw_reaction_add(payload):
         if payload.user_id == bot.user.id:
@@ -27,10 +31,11 @@ async def on_ready():
 
         if channel:
             if payload.emoji.name == "🤖":
-                await channel.send("Bee-bop!") #Easter-egg
+                await channel.send("Bee-bop!")  # Easter-egg
             elif payload.emoji:
                 await channel.send("😊💫")
-                
+
+
 def read_file(filepath):
     answers = {}
     with open(filepath, "r", encoding="utf-8") as file:
@@ -40,20 +45,23 @@ def read_file(filepath):
                 question, answer, example = row[0], row[1], row[2]
                 answers[question] = f"{answer}, {example}"
             else:
-                print(f"Ignorerar raden: {row} eftersom den inte har tillräckligt med kolumner.\nError: Fel på databasformat!")
+                print(
+                    f"Ignorerar raden: {row} eftersom den inte har tillräckligt med kolumner.\nError: Fel på databasformat!"
+                )
 
     return answers
+
 
 @bot.event
 async def on_message(message):
     if message.author == bot.user:
         return
-    
+
     content = message.content.lower()
 
     if content.startswith("!ssb-commands"):
-        await message.channel.send("I listen to these commands:")
-    elif content.startswith("!ssb"): #! This need to be the last one of the !SSB-commands
+        await message.channel.send("I listen to these commands:\n* !SSB <command>")
+    elif content.startswith("!ssb"):
         if message.author == bot.user:
             return
 
@@ -76,28 +84,21 @@ async def on_message(message):
                 best_match = (question, pattern)
                 max_match = match_pattern
 
-        if max_match > 10: #! Accuracy, default is 50
+        if max_match > 10:  #! Accuracy, default is 50
             answer = (
                 f"Best match i could find was:```{best_match[0]} - {best_match[1]}```"
             )
-            print(best_match) #? Dev-mode, remove!!!!
+            # print(best_match) #? Dev-mode, remove!!!!
             await message.channel.send(answer)
 
         else:
             no_answer = content.replace("!ssb", "")
-            print(best_match) #? Dev-mode, remove!!!!
+            # print(best_match) #? Dev-mode, remove!!!!
             await message.channel.send(
                 f"I can't find anything related to: **{no_answer}**"
             )
 
-
-
-
-
-
         # await message.channel.send(f"Hi! 👋 \n* To activate me use: _!SSB+<command>_\n* Use: _!SSB-commands_ to see my commands!")
-    
-    
 
 
 discord_key = discord_key()
