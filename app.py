@@ -1,5 +1,6 @@
 import discord
-from discord.ext import commands
+
+# from discord.ext import commands
 from discord_key import discord_key
 from fuzzywuzzy import fuzz
 import csv
@@ -18,7 +19,7 @@ async def on_ready():
     await bot.get_channel(1154684336386355302).send("_StarstreamBot is online_ 💫")
     await bot.change_presence(
         activity=discord.CustomActivity(
-            name='🤖 Type "!SBB <keywords>" to call me', emoji="🤖"
+            name='🤖 Type "!SBB <keywords>" to call me', emoji="'🤖"
         )
     )
 
@@ -32,6 +33,7 @@ async def on_ready():
         if channel:
             if payload.emoji.name == "🤖":
                 await channel.send("Bee-bop!")  # Easter-egg
+                print(f"🤖 {payload.member} skickade en bot i {payload.channel.name}! 🤖")
             elif payload.emoji:
                 await channel.send("😊💫")
 
@@ -61,9 +63,11 @@ async def on_message(message):
 
     if content.startswith("!ssb-commands"):
         await message.channel.send("I listen to these commands:\n* !SSB <command>")
-    
+
     elif content == "!ssb":
-        await message.channel.send(f"Hi! 👋 \n* To activate me use: _!SSB+<command>_\n* Use: _!SSB-commands_ to see my commands!")
+        await message.channel.send(
+            f"Hi! 👋 \n* To activate me use: _!SSB+<command>_\n* Use: _!SSB-commands_ to see my commands!"
+        )
 
     elif content.startswith("!ssb"):
         if message.author == bot.user:
@@ -77,7 +81,9 @@ async def on_message(message):
         max_match = 0
 
         for question, pattern in answers.items():
-            pattern_question = fuzz.token_set_ratio(content, question.lower()) #? change to .ratio if mess up
+            pattern_question = fuzz.token_set_ratio(
+                content, question.lower()
+            )  # ? change to .ratio if mess up
             match_pattern = fuzz.token_set_ratio(content, pattern.lower())
 
             if pattern_question > max_match:
@@ -101,6 +107,7 @@ async def on_message(message):
             await message.channel.send(
                 f"I can't find anything related to: **{no_answer}**"
             )
+
 
 discord_key = discord_key()
 bot.run(discord_key)
