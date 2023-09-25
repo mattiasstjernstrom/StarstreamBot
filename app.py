@@ -13,6 +13,7 @@ bot = discord.Client(command_prefix="!", intents=intents)
 channel = bot.get_channel(1154684336386355302)
 filepath = "dict.csv"  #! Database for questions
 
+
 @bot.event
 async def on_ready():
     print("\033[1m\033[95mWe have logged in as {0.user}".format(bot))
@@ -37,7 +38,8 @@ async def on_ready():
                 print(f"🤖 {payload.member} skickade en bot i {payload.channel.name}! 🤖")
             elif payload.emoji:
                 await channel.send("😊💫")
-                
+
+
 @bot.event
 async def on_disconnect():
     print(f"Disconnect at {datetime.now()}")
@@ -47,18 +49,16 @@ def read_file(filepath):
     answers = {}
     with open(filepath, "r", encoding="utf-8") as file:
         filereader = csv.reader(file, delimiter=";")
-        next(filereader, None) # Skip first line in file, if needed
+        next(filereader, None)  # Skip first line in file, if needed
         line_count = 0
         for row in filereader:
             line_count += 1
-            
+
             if len(row) >= 3:
                 question, answer, syntax = row[0], row[1], row[2]
-                answers[question] = f"{answer}\n Syntax:  {syntax}"
+                answers[question.lower()] = f"{answer.lower()}", f"{syntax}"
             else:
-                print(
-                    f"Ignorerar raden: {line_count}\nFel på databasformat!"
-                )
+                print(f"Ignorerar raden: {line_count}\nFel på databasformat!")
 
     return answers
 
@@ -89,37 +89,36 @@ async def on_message(message):
         best_match = ("", "")
         max_match = 0
 
-        for question, pattern in answers.items():
-            pattern_question = fuzz.token_set_ratio(
-                content, question.lower()
-            )  # ? change to .ratio if mess up
-            match_pattern = fuzz.token_set_ratio(content, pattern.lower())
+        for question, (answer, syntax) in answers.items():
+            pattern_question = fuzz.token_set_ratio(content, question)
+            match_pattern = fuzz.token_set_ratio(content, answer)
 
             if pattern_question > max_match:
-                best_match = (question, pattern)
+                best_match = (question, answer)
                 max_match = pattern_question
 
             if match_pattern > max_match:
-                best_match = (question, pattern)
+                best_match = (question, answer)
                 max_match = match_pattern
 
         if max_match > 50:  #! Accuracy, default is 50
-            answer = (
-                f"_{best_match[0]}_ was the best i could find:"
-            )
-            await message.channel.send(answer)
-            
             embed = discord.Embed(
                 title=best_match[0],
                 description=best_match[1],
-                color=discord.Color.blue()
+                color=discord.Color.dark_blue(),
             )
 
-            embed.add_field(name="Syntax", value="desc", inline=True)
+            embed.add_field(name="Syntax", value=f"{syntax}", inline=True)
 
- 
-            channel = bot.get_channel(1154684336386355302)  # Ersätt med den önskade kanalens ID
+              # Ersätt med den önskade kanalens ID
+            channel = bot.get_channel(
+                1154684336386355302
+            )
             await channel.send(embed=embed)
+            answer = (
+                f">>> _**{best_match[0]}** was the best i could find (!SSB --<help>)_"
+            )
+            await message.channel.send(answer)
 
         else:
             no_answer = content.replace("!ssb", "")
