@@ -77,8 +77,8 @@ async def on_message(message):
         max_match = 0
 
         for question, pattern in answers.items():
-            pattern_question = fuzz.ratio(content, question.lower())
-            match_pattern = fuzz.ratio(content, pattern.lower())
+            pattern_question = fuzz.token_set_ratio(content, question.lower()) #? change to .ratio if mess up
+            match_pattern = fuzz.token_set_ratio(content, pattern.lower())
 
             if pattern_question > max_match:
                 best_match = (question, pattern)
