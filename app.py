@@ -11,7 +11,7 @@ from datetime import datetime
 intents = discord.Intents.all()
 bot = discord.Client(command_prefix="!", intents=intents)
 channel = bot.get_channel(1154684336386355302)
-filepath = "test_dict.csv"  #! Database for questions
+filepath = "dict.csv"  #! Database for questions
 
 @bot.event
 async def on_ready():
@@ -46,14 +46,17 @@ async def on_disconnect():
 def read_file(filepath):
     answers = {}
     with open(filepath, "r", encoding="utf-8") as file:
-        filereader = csv.reader(file, delimiter=",")
+        filereader = csv.reader(file, delimiter=";")
+        line_count = 0
         for row in filereader:
+            line_count += 1
+            
             if len(row) >= 3:
                 question, answer, example = row[0], row[1], row[2]
                 answers[question] = f"{answer}, {example}"
             else:
                 print(
-                    f"Ignorerar raden: {row} eftersom den inte har tillräckligt med kolumner.\nError: Fel på databasformat!"
+                    f"Ignorerar raden: {line_count}\nFel på databasformat!"
                 )
 
     return answers
