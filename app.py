@@ -5,6 +5,7 @@ from discord_key import discord_key
 from fuzzywuzzy import fuzz
 import csv
 import re
+from datetime import datetime
 
 
 intents = discord.Intents.all()
@@ -12,10 +13,10 @@ bot = discord.Client(command_prefix="!", intents=intents)
 channel = bot.get_channel(1154684336386355302)
 filepath = "test_dict.csv"  #! Database for questions
 
-
 @bot.event
 async def on_ready():
     print("\033[1m\033[95mWe have logged in as {0.user}".format(bot))
+    print(f"{datetime.now()}")
     await bot.get_channel(1154684336386355302).send("_StarstreamBot is online_ 💫")
     await bot.change_presence(
         activity=discord.CustomActivity(
@@ -36,6 +37,10 @@ async def on_ready():
                 print(f"🤖 {payload.member} skickade en bot i {payload.channel.name}! 🤖")
             elif payload.emoji:
                 await channel.send("😊💫")
+                
+@bot.event
+async def on_disconnect():
+    print(f"Disconnect at {datetime.now()}")
 
 
 def read_file(filepath):
