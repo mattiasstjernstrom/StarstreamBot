@@ -90,15 +90,15 @@ async def on_message(message):
         max_match = 0
 
         for question, (answer, syntax) in answers.items():
-            pattern_question = fuzz.token_set_ratio(content, question)
-            match_pattern = fuzz.token_set_ratio(content, answer)
+            pattern_question = fuzz.token_set_ratio(content, question, syntax)
+            match_pattern = fuzz.token_set_ratio(content, answer, syntax)
 
             if pattern_question > max_match:
-                best_match = (question, answer)
+                best_match = (question, answer, syntax)
                 max_match = pattern_question
 
             if match_pattern > max_match:
-                best_match = (question, answer)
+                best_match = (question, answer, syntax)
                 max_match = match_pattern
 
         if max_match > 50:  #! Accuracy, default is 50
@@ -108,7 +108,7 @@ async def on_message(message):
                 color=discord.Color.dark_blue(),
             )
 
-            embed.add_field(name="Syntax", value=f"{syntax}", inline=True)
+            embed.add_field(name="Syntax", value=f"{best_match[2]}", inline=True)
 
               # Ersätt med den önskade kanalens ID
             channel = bot.get_channel(
@@ -116,7 +116,7 @@ async def on_message(message):
             )
             await channel.send(embed=embed)
             answer = (
-                f">>> _**{best_match[0]}** was the best i could find (!SSB --<help>)_"
+                f">>> _**{best_match[0]}** was the best i could find._"
             )
             await message.channel.send(answer)
 
