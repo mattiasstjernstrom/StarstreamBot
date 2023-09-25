@@ -47,13 +47,14 @@ def read_file(filepath):
     answers = {}
     with open(filepath, "r", encoding="utf-8") as file:
         filereader = csv.reader(file, delimiter=";")
+        next(filereader, None) # Skip first line in file, if needed
         line_count = 0
         for row in filereader:
             line_count += 1
             
             if len(row) >= 3:
-                question, answer, example = row[0], row[1], row[2]
-                answers[question] = f"{answer}, {example}"
+                question, answer, syntax = row[0], row[1], row[2]
+                answers[question] = f"{answer}\n Syntax:  {syntax}"
             else:
                 print(
                     f"Ignorerar raden: {line_count}\nFel på databasformat!"
@@ -104,14 +105,24 @@ async def on_message(message):
 
         if max_match > 50:  #! Accuracy, default is 50
             answer = (
-                f"Best match i could find was:```{best_match[0]} - {best_match[1]}```"
+                f"_{best_match[0]}_ was the best i could find:"
             )
-            # print(best_match) #? Dev-mode, remove!!!!
             await message.channel.send(answer)
+            
+            embed = discord.Embed(
+                title=best_match[0],
+                description=best_match[1],
+                color=discord.Color.blue()
+            )
+
+            embed.add_field(name="Syntax", value="desc", inline=True)
+
+ 
+            channel = bot.get_channel(1154684336386355302)  # Ersätt med den önskade kanalens ID
+            await channel.send(embed=embed)
 
         else:
             no_answer = content.replace("!ssb", "")
-            # print(best_match) #? Dev-mode, remove!!!!
             await message.channel.send(
                 f"I can't find anything related to: **{no_answer}**"
             )
