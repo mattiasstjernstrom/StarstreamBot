@@ -61,6 +61,10 @@ async def on_message(message):
 
     if content.startswith("!ssb-commands"):
         await message.channel.send("I listen to these commands:\n* !SSB <command>")
+    
+    elif content == "!ssb":
+        await message.channel.send(f"Hi! 👋 \n* To activate me use: _!SSB+<command>_\n* Use: _!SSB-commands_ to see my commands!")
+
     elif content.startswith("!ssb"):
         if message.author == bot.user:
             return
@@ -84,7 +88,7 @@ async def on_message(message):
                 best_match = (question, pattern)
                 max_match = match_pattern
 
-        if max_match > 10:  #! Accuracy, default is 50
+        if max_match > 50:  #! Accuracy, default is 50
             answer = (
                 f"Best match i could find was:```{best_match[0]} - {best_match[1]}```"
             )
@@ -97,9 +101,6 @@ async def on_message(message):
             await message.channel.send(
                 f"I can't find anything related to: **{no_answer}**"
             )
-
-        # await message.channel.send(f"Hi! 👋 \n* To activate me use: _!SSB+<command>_\n* Use: _!SSB-commands_ to see my commands!")
-
 
 discord_key = discord_key()
 bot.run(discord_key)
