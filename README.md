@@ -8,7 +8,7 @@ _StarstreamBot_ is a "dictionary bot" built in Python as a hobby project. The bo
 Currently, I have a test word-list containing Python's built-in functions, syntax, and error messages for testing purposes.
 
 ## Setup:
-* Make a bot at [``Discord developer portal``](https://discord.com/developers/applications/)
+* Make a bot at [Discord developer portal](https://discord.com/developers/applications/)
 * Copy ``channel-ID`` and ``Bot_token``
 * Make a file named: ``discord_key.py`` (or use dotenv) and use copy this:
 ```py
