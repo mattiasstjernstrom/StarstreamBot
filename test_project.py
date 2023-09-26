@@ -5,6 +5,7 @@ from project import write_file
 def test_fuzz_ratio():
     assert fuzz_ratio(bytes) == ("bytes()", "Returns a bytes object", "Sorry, no more info about bytes() yet!")
     assert fuzz_ratio("wrong") == ("ValueError", "Raised when there is a wrong value in a specified data type", "Sorry, no more info about ValueError yet!")
+    assert fuzz_ratio("Totallywrongseach") == None
     try:
         assert "WrongAnswer" in fuzz_ratio(message)
     except NameError:
