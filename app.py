@@ -1,7 +1,6 @@
 import discord
-
-# from discord.ext import commands
 from discord_key import discord_key
+from discord.ext import commands
 from fuzzywuzzy import fuzz
 import csv
 import re
@@ -9,16 +8,16 @@ from datetime import datetime
 
 
 intents = discord.Intents.all()
-bot = discord.Client(command_prefix="!", intents=intents)
-channel = bot.get_channel(1154684336386355302)
 filepath = "dict.csv"  #! Database for questions
+channel_id = 1154684336386355302 #! Active bot-channel
+bot = discord.Client(command_prefix="!", intents=intents)
 
 
 @bot.event
 async def on_ready():
     print("\033[1m\033[95mWe have logged in as {0.user}".format(bot))
     print(f"{datetime.now()}")
-    await bot.get_channel(1154684336386355302).send("_StarstreamBot is online_ 💫")
+    await bot.get_channel(channel_id).send("_StarstreamBot is online_ 💫")
     await bot.change_presence(
         activity=discord.CustomActivity(
             name='🤖 Type "!SBB <keywords>" to call me', emoji="'🤖"
@@ -56,7 +55,7 @@ def read_file(filepath):
 
             if len(row) >= 3:
                 question, answer, syntax = row[0], row[1], row[2]
-                answers[question.lower()] = f"{answer.lower()}", f"{syntax}"
+                answers[question] = f"{answer}", f"{syntax}"
             else:
                 print(f"Ignorerar raden: {line_count}\nFel på databasformat!")
 
@@ -110,13 +109,9 @@ async def on_message(message):
 
             embed.add_field(name="Syntax", value=f"{best_match[2]}", inline=True)
 
-              # Ersätt med den önskade kanalens ID
-            channel = bot.get_channel(
-                1154684336386355302
-            )
-            await channel.send(embed=embed)
+            await bot.get_channel(channel_id).send(embed=embed)
             answer = (
-                f">>> _**{best_match[0]}** was the best i could find._"
+                f">>> _Wasn't **{best_match[0]}** what you looking for?\nTry specify more and/or check spelling!_"
             )
             await message.channel.send(answer)
 
