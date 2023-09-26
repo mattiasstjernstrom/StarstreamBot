@@ -9,7 +9,7 @@ import csv
 intents = discord.Intents.all()
 intents.message_content = True
 filepath = "dict.csv"  #! Database for questions
-channel_id = 1154684336386355302 #! Active bot-channel
+channel_id = 1154684336386355302  #! Active bot-channel
 bot = discord.Client(command_prefix="!", intents=intents)
 
 
@@ -20,7 +20,7 @@ async def on_ready():
     await bot.get_channel(channel_id).send("_StarstreamBot is online_ 💫")
     await bot.change_presence(
         activity=discord.CustomActivity(
-            name='🤖 Type "!SBB <keywords>" to call me', emoji="🤖"
+            name='🤖 Type "!SBB <keywords>" to call me', emoji="'🤖"
         )
     )
 
@@ -74,25 +74,29 @@ async def on_message(message):
         await message.channel.send(
             f"Hi, i'm StarstreamBot! 👋 \n* To activate me use: _!SSB <command>_\n* Use: _!SSB-commands_ to see my commands!"
         )
-    
+
     elif content.startswith("!thiswascs50p"):
         embed = discord.Embed(
-        title="CS50:Python",
-        description="This was CS50P, thanks for watching!",
-        color=0x7e7a17,
+            title="CS50:Python",
+            description="This was CS50P, thanks for watching!",
+            color=0x7E7A17,
         )
-        
+
         embed.set_thumbnail(
-        url="https://www.harvard.edu/wp-content/uploads/2021/02/harvard-fac-375x281.png"
+            url="https://www.harvard.edu/wp-content/uploads/2021/02/harvard-fac-375x281.png"
         )
-        
-        embed.set_footer(text="Mattias Stjernström, 2023",icon_url="https://www.python.org/static/img/python-logo-large.c36dccadd999.png")
+
+        embed.set_footer(
+            text="Mattias Stjernström, 2023",
+            icon_url="https://www.python.org/static/img/python-logo-large.c36dccadd999.png",
+        )
 
         await bot.get_channel(channel_id).send(embed=embed)
-    
-    elif content.startswith("!ssb-commands"):
-        await message.channel.send("I listen to these commands:\n* !SSB <command> _- for Python Dictionary_ 🐍\n* !SSB-example _for testing purposes_ 🧑‍💻")
 
+    elif content.startswith("!ssb-commands"):
+        await message.channel.send(
+            "I listen to these commands:\n* !SSB <command> _- for Python Dictionary_ 🐍\n* !SSB-example _for testing purposes _🧑‍💻"
+        )
 
     elif content.startswith("!ssb "):
         if message.author == bot.user:
@@ -124,15 +128,16 @@ async def on_message(message):
                 color=discord.Color.dark_blue(),
             )
 
-            embed.add_field(name="Syntax and/or Use", value=f"{best_match[2]}", inline=True)
+            embed.add_field(
+                name="Syntax and/or Use", value=f"{best_match[2]}", inline=True
+            )
 
             await bot.get_channel(channel_id).send(embed=embed)
-            answer = (
-                f">>> _Wasn't **{best_match[0]}** what you were looking for?\nTry specify more and/or check spelling!_"
-            )
+            answer = f">>> _Wasn't **{best_match[0]}** what you were looking for?\nTry specify more and/or check spelling!_"
             await message.channel.send(answer)
-            print(f"{message.author} asked for '{message.content}' and got '{best_match[0]}' as answer")
-
+            print(
+                f"{message.author} asked for '{message.content}' and got '{best_match[0]}' as answer"
+            )
 
         else:
             no_answer = content.replace("!ssb", "")
@@ -140,7 +145,6 @@ async def on_message(message):
                 f"I can't find anything related to: **{no_answer}**"
             )
             print(f"{message.author} asked for '{message.content}' and got no answer.")
-
 
 
 discord_key = discord_key()
