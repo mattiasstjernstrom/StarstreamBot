@@ -1,7 +1,8 @@
 import discord
 from discord_key import discord_key
 from discord.ext import commands
-from fuzzywuzzy import fuzz
+from project import fuzz_ratio
+from project import write_file
 from datetime import datetime
 import csv
 
@@ -102,26 +103,10 @@ async def on_message(message):
         if message.author == bot.user:
             return
 
-        content = message.content.lower()
+        find = message.content.lower().replace("!ssb ", "")
+        best_match = fuzz_ratio(find)
 
-        answers = read_file(filepath)
-
-        best_match = ("", "")
-        max_match = 0
-
-        for question, (answer, syntax_use) in answers.items():
-            pattern_question = fuzz.token_set_ratio(content, question, syntax_use)
-            match_pattern = fuzz.token_set_ratio(content, answer, syntax_use)
-
-            if pattern_question > max_match:
-                best_match = (question, answer, syntax_use)
-                max_match = pattern_question
-
-            if match_pattern > max_match:
-                best_match = (question, answer, syntax_use)
-                max_match = match_pattern
-
-        if max_match > 50:  #! Accuracy, default is 50
+        if best_match != None:
             embed = discord.Embed(
                 title=best_match[0],
                 description=best_match[1],
@@ -138,13 +123,17 @@ async def on_message(message):
             print(
                 f"{message.author} asked for '{message.content}' and got '{best_match[0]}' as answer"
             )
-
         else:
-            no_answer = content.replace("!ssb", "")
-            await message.channel.send(
-                f"I can't find anything related to: **{no_answer}**"
+            no_answer = content.replace("!ssb ", "")
+            embed = discord.Embed(
+                title="Sorry!",
+                description=f"I can't find anything related to:\n**{no_answer}**",
+                color=discord.Color.red(),
             )
+            embed.set_footer(text="_Try specify more and/or check spelling!_")
+            await bot.get_channel(channel_id).send(embed=embed)
             print(f"{message.author} asked for '{message.content}' and got no answer.")
+            write_file(find)
 
 
 discord_key = discord_key()
