@@ -2,9 +2,8 @@ import discord
 from discord_key import discord_key
 from discord.ext import commands
 from fuzzywuzzy import fuzz
-import csv
-import re
 from datetime import datetime
+import csv
 
 
 intents = discord.Intents.all()
