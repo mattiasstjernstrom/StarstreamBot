@@ -21,7 +21,7 @@ async def on_ready():
     await bot.get_channel(channel_id).send("_StarstreamBot is online_ 💫")
     await bot.change_presence(
         activity=discord.CustomActivity(
-            name='🤖 Type "!SBB <keywords>" to call me', emoji="'🤖"
+            name='🤖 Type "!SBB <keywords>" to call me', emoji="🤖"
         )
     )
 
@@ -35,7 +35,6 @@ async def on_ready():
         if channel:
             if payload.emoji.name == "🤖":
                 await channel.send("Bee-bop!")  # Easter-egg
-                print(f"🤖 {payload.member} skickade en bot i {payload.channel.name}! 🤖")
             elif payload.emoji:
                 await channel.send("😊💫")
 
