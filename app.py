@@ -35,6 +35,8 @@ async def on_ready():
         if channel:
             if payload.emoji.name == "🤖":
                 await channel.send("Bee-bop!")  # Easter-egg
+            elif payload.emoji.name == "👋":
+                await channel.send("👋")
             elif payload.emoji:
                 await channel.send("😊💫")
 
@@ -90,7 +92,7 @@ async def on_message(message):
         await bot.get_channel(channel_id).send(embed=embed)
     
     elif content.startswith("!ssb-commands"):
-        await message.channel.send("I listen to these commands:\n* !SSB <command> _-for Python Dictionary_\n* !SSB-example _for testing purposes_")
+        await message.channel.send("I listen to these commands:\n* !SSB <command> _- for Python Dictionary_ 🐍\n* !SSB-example _for testing purposes_ 🧑‍💻")
 
 
     elif content.startswith("!ssb "):
