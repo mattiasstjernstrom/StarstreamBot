@@ -21,10 +21,17 @@ def discord_key():
 
 ## Criteria for the course
 
-- [ ] What will your software do? What features will it have? How will it be executed?
-- [ ] What new skills will you need to acquire? What topics will you need to research?
+- [x] What will your software do? What features will it have? How will it be executed?
+    > * A Discord dictionary-bot
+    > * Features: Ask the bot for words and sentences and get explanations
+    > * As a Discord bot, but it will also have a ``Stand Alone Mode``
+- [x] What new skills will you need to acquire? What topics will you need to research?
+    > * Using frameworks, using modules
+    > * How to execute a Discord Bot, how to make a dictionary with some "IQ", i need to research algorithms that fits in my task
 - [ ] If working with one or two classmates, who will do what?
-- [ ] In the world of software, most everything takes longer to implement than you expect. And so it’s not uncommon to accomplish less in a fixed amount of time than you hope. What might you consider to be a good outcome for your project? A better outcome? The best outcome?
+    > I'm lone coder 🧑‍💻
+- [x] In the world of software, most everything takes longer to implement than you expect. And so it’s not uncommon to accomplish less in a fixed amount of time than you hope. What might you consider to be a good outcome for your project? A better outcome? The best outcome?
+    > A good outcome for my project would be if some kind of algorithm can predict similarity between to strings so i can pull the right explanation from database
 - [ ] Create a Video, max three minutes
 - [ ] Upload to youtube
 - [ ] Submit to ``Google-forms``
