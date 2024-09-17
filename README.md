@@ -1,7 +1,6 @@
 # 💫🤖 StarstreamBot!
 
 
-#### Video Demo:  https://youtu.be/QPLI4aW0dNk
 #### Description:
 _StarstreamBot_ is a "dictionary bot" built in Python as a hobby project. The bot is based on the Levenshtein distance algorithm and works like this: it takes a string that you, as a user, search for and compares it with the string in the database. The higher the similarity, the more likely the user means that specific part of the dictionary. This algorithm also allows for some degree of misspelling and the inclusion of words that might not be in the dictionary but can still find the correct word.
 
